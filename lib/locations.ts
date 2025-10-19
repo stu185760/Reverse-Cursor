@@ -1,0 +1,43 @@
+export const INDIA_CITIES = [
+  "Mumbai",
+  "Delhi NCR",
+  "Bengaluru",
+  "Hyderabad",
+  "Chennai",
+  "Kolkata",
+  "Pune",
+  "Ahmedabad",
+  "Jaipur",
+  "Surat",
+  "Lucknow",
+  "Kanpur",
+  "Nagpur",
+  "Indore",
+  "Thane",
+  "Bhopal",
+  "Visakhapatnam",
+  "Patna",
+  "Vadodara",
+  "Ghaziabad",
+  "Noida",
+  "Gurugram",
+]
+
+export const GLOBAL_CITIES = [
+  "Remote",
+  "New York",
+  "San Francisco",
+  "Los Angeles",
+  "London",
+  "Paris",
+  "Berlin",
+  "Amsterdam",
+  "Dubai",
+  "Singapore",
+  "Tokyo",
+  "Seoul",
+  "Sydney",
+  "Toronto",
+]
+
+export const ALL_LOCATIONS: string[] = [...INDIA_CITIES, ...GLOBAL_CITIES]
