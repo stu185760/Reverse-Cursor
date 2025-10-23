@@ -1,6 +1,6 @@
 "use client"
 
-import { INDIA_CITIES, GLOBAL_CITIES } from "@/lib/locations"
+import { SPECIAL_LOCATIONS, MAJOR_CITIES, OTHER_CITIES, INTERNATIONAL_CITIES } from "@/lib/locations"
 
 type Props = {
   id?: string
@@ -21,15 +21,33 @@ export default function LocationSelect({ id, value, onChange, includeAll, classN
       aria-label={ariaLabel || "Location"}
     >
       {includeAll && <option value="all">All locations</option>}
-      <optgroup label="India">
-        {INDIA_CITIES.map((city) => (
+      
+      <optgroup label="📍 Special Options">
+        {SPECIAL_LOCATIONS.map((loc) => (
+          <option key={loc} value={loc}>
+            {loc}
+          </option>
+        ))}
+      </optgroup>
+
+      <optgroup label="🏙️ Major Indian Cities">
+        {MAJOR_CITIES.map((city) => (
           <option key={city} value={city}>
             {city}
           </option>
         ))}
       </optgroup>
-      <optgroup label="Global">
-        {GLOBAL_CITIES.map((city) => (
+      
+      <optgroup label="🏘️ Other Indian Cities">
+        {OTHER_CITIES.map((city) => (
+          <option key={city} value={city}>
+            {city}
+          </option>
+        ))}
+      </optgroup>
+      
+      <optgroup label="🌍 International">
+        {INTERNATIONAL_CITIES.map((city) => (
           <option key={city} value={city}>
             {city}
           </option>

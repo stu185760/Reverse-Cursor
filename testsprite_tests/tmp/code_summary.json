@@ -1,0 +1,307 @@
+{
+  "tech_stack": [
+    "TypeScript",
+    "React 19",
+    "Next.js 15.2.4",
+    "Tailwind CSS 4.1.9",
+    "next-pwa 5.6.0",
+    "Local Storage (Browser)",
+    "Supabase (Optional)",
+    "PWA (Progressive Web App)"
+  ],
+  "features": [
+    {
+      "name": "Progressive Web App (PWA)",
+      "description": "Full PWA implementation with installable app, offline support, service worker caching, custom install prompt with iOS/Android specific instructions, PWA manifest with app icons (8 sizes), and mobile app download section on homepage.",
+      "files": [
+        "public/manifest.json",
+        "next.config.mjs",
+        "app/layout.tsx",
+        "components/install-prompt.tsx",
+        "components/pwa-download-section.tsx"
+      ]
+    },
+    {
+      "name": "Premium Black + Neon Theme",
+      "description": "Dark theme with jet black (#0D0D0D) background, neon cyan (#00FFFF) primary, and electric purple (#7A00FF) accents. Includes glassmorphic cards with neon glow effects.",
+      "files": [
+        "app/globals.css",
+        "app/layout.tsx"
+      ]
+    },
+    {
+      "name": "India-Specific Localization",
+      "description": "INR currency formatting with ₹ symbol, Indian Rupee number formatting (lakhs/crores), and comprehensive Indian city location system with 40+ cities organized by major/other/international.",
+      "files": [
+        "lib/utils.ts",
+        "lib/locations.ts",
+        "components/location-select.tsx"
+      ]
+    },
+    {
+      "name": "Input Validation & Security",
+      "description": "Centralized validation system with XSS protection, HTML sanitization, character limits, rate limiting, and comprehensive input validation for ads, quotes, and forms.",
+      "files": [
+        "lib/validation.ts",
+        "components/post-ad-wizard.tsx",
+        "components/quote-form.tsx"
+      ]
+    },
+    {
+      "name": "Hero Section",
+      "description": "Premium hero banner with gradient overlays, neon-highlighted title, trust indicators (10,000+ users), and glassmorphic image grid with hover effects.",
+      "files": [
+        "components/hero.tsx"
+      ]
+    },
+    {
+      "name": "Site Header & Navigation",
+      "description": "Responsive header with black background, neon-themed branding, mobile hamburger menu, and authentication state management.",
+      "files": [
+        "components/site-header.tsx"
+      ]
+    },
+    {
+      "name": "Customer Testimonials",
+      "description": "Testimonial cards featuring Indian personas (Riya Sharma, Arjun Mehta, Priya Nair) with star ratings and location badges.",
+      "files": [
+        "components/testimonials-section.tsx",
+        "app/page.tsx"
+      ]
+    },
+    {
+      "name": "Post Ad Wizard",
+      "description": "4-step wizard for customers to post ads: category selection, details with INR budget fields, image upload (up to 8), and preview. Includes Indian location selector and input validation.",
+      "files": [
+        "components/post-ad-wizard.tsx",
+        "app/post-ad/page.tsx"
+      ]
+    },
+    {
+      "name": "Ad Listing & Browsing",
+      "description": "Browse all customer ads with filtering by category, location, and search. Displays ads with INR price ranges, location, and status badges.",
+      "files": [
+        "components/ad-list.tsx",
+        "components/ad-card.tsx",
+        "app/ads/page.tsx"
+      ]
+    },
+    {
+      "name": "Ad Detail Page",
+      "description": "Comprehensive ad view showing full details, images, budget in INR, location. Includes AI vendor recommendations, quote submission form for vendors, and quotes received section for customers.",
+      "files": [
+        "components/ad-detail.tsx",
+        "app/ads/[id]/page.tsx"
+      ]
+    },
+    {
+      "name": "Vendor Quote System",
+      "description": "Complete quote workflow: vendors submit quotes with price_inr, delivery_days, and detailed message. Customers can accept/reject quotes. Accepting auto-rejects other pending quotes and closes the ad.",
+      "files": [
+        "components/quote-form.tsx",
+        "components/quote-card.tsx",
+        "components/quote-list.tsx",
+        "lib/local-db.ts"
+      ]
+    },
+    {
+      "name": "AI Vendor Matching",
+      "description": "Keyword-based matching engine that scores vendors by category match (mandatory requirement), location proximity, keyword overlap, rating, experience, and verified status. Shows top 3-5 recommended vendors with match reasons. Fixed to ensure strict category matching.",
+      "files": [
+        "lib/ai-matching.ts",
+        "components/recommended-vendors.tsx"
+      ]
+    },
+    {
+      "name": "Vendor Profile System",
+      "description": "Comprehensive vendor profiles with avatar, business info, star ratings, review count, years of experience, specialties, location, portfolio gallery, and stats (total quotes, accepted, pending).",
+      "files": [
+        "components/vendor-profile.tsx",
+        "app/vendor/[id]/page.tsx"
+      ]
+    },
+    {
+      "name": "Review & Rating System",
+      "description": "Customers can leave reviews and 1-5 star ratings for vendors they've worked with (accepted quotes). Automatic vendor rating calculation and display.",
+      "files": [
+        "lib/local-db.ts"
+      ]
+    },
+    {
+      "name": "Notification Bell",
+      "description": "Real-time notification dropdown in header showing new quotes, accepted quotes, and new messages with unread count badge. Click-to-navigate functionality.",
+      "files": [
+        "components/notification-bell.tsx"
+      ]
+    },
+    {
+      "name": "Messaging System",
+      "description": "Thread-based messaging between customers and vendors, linked to specific ads and quotes. Message history with timestamps.",
+      "files": [
+        "components/chat-thread.tsx",
+        "app/messages/page.tsx",
+        "app/messages/[threadId]/page.tsx"
+      ]
+    },
+    {
+      "name": "Admin Dashboard - Overview",
+      "description": "Protected admin panel with comprehensive metrics: total users, active ads, pending quotes, transaction value in INR, messages, flags. Platform health indicators including conversion rates.",
+      "files": [
+        "app/admin/layout.tsx",
+        "app/admin/page.tsx"
+      ]
+    },
+    {
+      "name": "Admin User Management",
+      "description": "View, search, and filter all users by role (customer/vendor/admin). Displays user details, verified status, ratings for vendors.",
+      "files": [
+        "app/admin/users/page.tsx"
+      ]
+    },
+    {
+      "name": "Admin Ad Moderation",
+      "description": "Search and filter all ads by status. View details, delete ads with confirmation. Shows ad owner, timestamps, locations, and budget in INR.",
+      "files": [
+        "app/admin/ads/page.tsx"
+      ]
+    },
+    {
+      "name": "Admin Message Monitoring",
+      "description": "Read-only view of all customer-vendor conversation threads for moderation. Shows participants, message counts, and last activity.",
+      "files": [
+        "app/admin/messages/page.tsx"
+      ]
+    },
+    {
+      "name": "Admin Flag Management",
+      "description": "Review and moderate flagged content (ads, responses, messages). View reasons, timestamps, and navigate to flagged items.",
+      "files": [
+        "app/admin/flags/page.tsx"
+      ]
+    },
+    {
+      "name": "Admin Reports & Analytics",
+      "description": "Detailed platform analytics: user growth, ad activity, transaction metrics in INR, top categories bar chart with percentages.",
+      "files": [
+        "app/admin/reports/page.tsx"
+      ]
+    },
+    {
+      "name": "Vendor Browse Ads",
+      "description": "Vendors can browse customer ads with filters by category, location, and sort by newest or budget. AI-powered relevance scoring.",
+      "files": [
+        "components/vendor-browse.tsx",
+        "app/vendor/browse/page.tsx"
+      ]
+    },
+    {
+      "name": "Classifieds System",
+      "description": "Vendors can post classified ads for their products/services with images, pricing in INR, and categorization.",
+      "files": [
+        "components/classified-list.tsx",
+        "components/classified-card.tsx",
+        "components/classified-post-form.tsx",
+        "app/classifieds/page.tsx",
+        "app/classifieds/post/page.tsx"
+      ]
+    },
+    {
+      "name": "Image Upload",
+      "description": "Multi-image upload component with preview, supports up to 8 images, JPG/PNG formats.",
+      "files": [
+        "components/image-upload.tsx"
+      ]
+    },
+    {
+      "name": "Loading States",
+      "description": "Skeleton loaders for cards, lists, and full pages. Loading spinners with neon cyan theme. Smooth transitions.",
+      "files": [
+        "components/loading-skeleton.tsx",
+        "app/layout.tsx"
+      ]
+    },
+    {
+      "name": "Error Handling",
+      "description": "Comprehensive error handling with ErrorBoundary component, error.tsx, global-error.tsx, and not-found.tsx pages. User-friendly error messages with reload functionality.",
+      "files": [
+        "components/error-boundary.tsx",
+        "app/error.tsx",
+        "app/global-error.tsx",
+        "app/not-found.tsx"
+      ]
+    },
+    {
+      "name": "Category Showcase",
+      "description": "Visual category cards on homepage with icons and click-to-filter functionality for clothing, footwear, furniture, automobile, jewelry, gifting, and others.",
+      "files": [
+        "components/category-showcase.tsx",
+        "components/category-cards.tsx"
+      ]
+    },
+    {
+      "name": "Local Storage Database",
+      "description": "Browser localStorage-based database system with full CRUD operations for users, ads, quotes, reviews, messages, threads, flags. Includes seed data with 3 roles (customer, vendor, admin).",
+      "files": [
+        "lib/local-db.ts"
+      ]
+    },
+    {
+      "name": "Supabase Integration (Optional)",
+      "description": "Optional Supabase backend integration with SQL migrations for quotes, reviews, and enhanced profiles. Includes Row Level Security policies.",
+      "files": [
+        "lib/supabase/client.ts",
+        "lib/supabase/server.ts",
+        "lib/supabase/middleware.ts",
+        "scripts/001_create_profiles.sql",
+        "scripts/002_create_ads.sql",
+        "scripts/003_create_classifieds.sql",
+        "scripts/004_create_messages.sql",
+        "scripts/005_create_profile_trigger.sql",
+        "scripts/006_create_quotes.sql",
+        "scripts/007_enhance_profiles.sql",
+        "middleware.ts"
+      ]
+    },
+    {
+      "name": "Authentication System",
+      "description": "Role-based authentication with customer, vendor, and admin roles. Session management via local storage or Supabase.",
+      "files": [
+        "app/auth/login/page.tsx",
+        "app/auth/sign-up/page.tsx",
+        "app/auth/sign-up-success/page.tsx"
+      ]
+    },
+    {
+      "name": "UI Component Library",
+      "description": "Comprehensive set of Radix UI components styled with black + neon theme: buttons, cards, inputs, badges, dropdowns, dialogs, etc.",
+      "files": [
+        "components/ui/button.tsx",
+        "components/ui/card.tsx",
+        "components/ui/input.tsx",
+        "components/ui/badge.tsx",
+        "components/ui/dropdown-menu.tsx",
+        "components/ui/dialog.tsx",
+        "components/ui/select.tsx",
+        "components/ui/textarea.tsx",
+        "components/ui/label.tsx"
+      ]
+    },
+    {
+      "name": "Accessibility Features",
+      "description": "WCAG AA compliant with ARIA labels, keyboard navigation support, focus-visible styles with cyan outline, minimum 44px touch targets on mobile, reduced motion support.",
+      "files": [
+        "app/globals.css",
+        "components/quote-form.tsx",
+        "components/post-ad-wizard.tsx"
+      ]
+    },
+    {
+      "name": "Responsive Design",
+      "description": "Mobile-first responsive design with breakpoints for mobile (375px), tablet (768px), and desktop (1440px+). Touch-optimized for mobile devices.",
+      "files": [
+        "app/globals.css",
+        "components/site-header.tsx"
+      ]
+    }
+  ]
+}

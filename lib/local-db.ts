@@ -10,6 +10,24 @@ export interface User {
   verified?: boolean
   bio?: string
   image?: string
+  // Vendor-specific fields
+  rating?: number // Average rating (0-5)
+  total_reviews?: number // Count of reviews
+  portfolio_images?: string[] // Portfolio gallery
+  specialties?: string[] // Categories they specialize in
+  phone_number?: string
+  business_name?: string
+  years_experience?: number
+  location?: string
+}
+
+export interface Review {
+  id: string
+  vendor_id: string
+  customer_id: string
+  rating: number // 1-5 stars
+  comment: string
+  created_at: number
 }
 
 export interface Category {
@@ -45,6 +63,22 @@ export interface AdResponse {
   status: ResponseStatus
   created_at: number
   thread_id?: string
+}
+
+// NEW: Structured Quote System
+export type QuoteStatus = "pending" | "accepted" | "rejected" | "withdrawn"
+
+export interface Quote {
+  id: string
+  ad_id: string
+  vendor_id: string
+  price_inr: number // Price in Indian Rupees
+  delivery_days: number // Estimated delivery time in days
+  message: string // Detailed offer description
+  status: QuoteStatus
+  created_at: number
+  updated_at: number
+  thread_id?: string // Optional link to message thread
 }
 
 export interface Message {
@@ -103,6 +137,8 @@ export interface DB {
   categories: Category[]
   ads: Ad[]
   responses: AdResponse[]
+  quotes: Quote[] // Structured quotes
+  reviews: Review[] // Vendor reviews
   messages: Message[]
   threads: Thread[]
   flags: Flag[]
@@ -155,6 +191,12 @@ export function loadDB(): DB {
     if (!Array.isArray(parsed.classifieds)) {
       parsed.classifieds = []
     }
+    if (!Array.isArray(parsed.quotes)) {
+      parsed.quotes = []
+    }
+    if (!Array.isArray(parsed.reviews)) {
+      parsed.reviews = []
+    }
     if (Array.isArray(parsed.threads)) {
       parsed.threads = parsed.threads.map((t: any) => ({
         ...t,
@@ -190,55 +232,57 @@ function seed(): DB {
   const customer: User = {
     id: "u-cust",
     role: "customer",
-    name: "Ava Customer",
-    email: "ava@example.com",
+    name: "Riya Sharma",
+    email: "riya@example.com",
     verified: true,
   }
   const vendor: User = {
     id: "u-vend",
     role: "vendor",
-    name: "Leo Vendor",
-    email: "leo@example.com",
-    verified: false,
-    bio: "Independent provider specializing in small projects.",
+    name: "Arjun Mehta",
+    email: "arjun@example.com",
+    verified: true,
+    bio: "Experienced craftsman specializing in custom jewelry and gifting solutions.",
+    rating: 4.8,
+    total_reviews: 24,
+    specialties: ["jewelry", "gifting"],
+    business_name: "Mehta Crafts",
+    years_experience: 8,
+    location: "Mumbai",
+    portfolio_images: [],
   }
   const admin: User = {
     id: "u-admin",
     role: "admin",
-    name: "Admin",
+    name: "Priya Nair",
     email: "admin@example.com",
     verified: true,
   }
 
   const cats = defaultCategories()
+  
+  // Only include 1 sample ad to avoid confusion
   const ad1: Ad = {
-    id: "ad-1",
-    title: "Need logo refresh for small boutique",
-    description: "Looking for a clean, minimal logo refresh. Include 2-3 concepts.",
-    category: "others",
+    id: "ad-sample-1",
+    title: "Custom Wedding Jewelry Design Needed",
+    description: "Looking for an experienced jeweler to design custom wedding rings and necklace set. Budget: ₹50,000-₹80,000. Need within 2 months.",
+    category: "jewelry",
     images: [],
     owner_id: customer.id,
     status: "open",
-    created_at: Date.now() - 1000 * 60 * 60 * 12,
-    location: "Remote",
-  }
-  const ad2: Ad = {
-    id: "ad-2",
-    title: "Fix leaky faucet in kitchen",
-    description: "Single handle faucet dripping. Need someone this week.",
-    category: "others",
-    images: [],
-    owner_id: customer.id,
-    status: "open",
-    created_at: Date.now() - 1000 * 60 * 60 * 36,
-    location: "San Diego, CA",
+    created_at: Date.now() - 1000 * 60 * 60 * 24, // 1 day ago
+    location: "Mumbai",
+    price_from: 50000,
+    price_to: 80000,
   }
 
   return {
     users: [customer, vendor, admin],
     categories: cats,
-    ads: [ad1, ad2],
+    ads: [ad1], // Only 1 sample ad now
     responses: [],
+    quotes: [], // Initialize quotes array
+    reviews: [], // Initialize reviews array
     messages: [],
     threads: [], // last_message_at will be set on creation
     flags: [],
@@ -545,4 +589,253 @@ export function listClassifieds(params?: {
     items.sort((a, b) => b.created_at - a.created_at)
   }
   return items
+}
+
+// ===== QUOTE SYSTEM =====
+
+/**
+ * Create a new quote for an ad (vendor only)
+ */
+export function createQuote(input: {
+  ad_id: string
+  price_inr: number
+  delivery_days: number
+  message: string
+}) {
+  const db = loadDB()
+  const user = getCurrentUser()
+  const ad = getAd(input.ad_id)
+  
+  if (!user || user.role !== "vendor") throw new Error("Only vendors can submit quotes")
+  if (!ad) throw new Error("Ad not found")
+  if (ad.status === "closed") throw new Error("This ad is no longer accepting quotes")
+
+  // Create or get thread between vendor and customer
+  let thread = db.threads.find((t) => t.ad_id === input.ad_id && t.vendor_id === user.id && t.customer_id === ad.owner_id)
+  if (!thread) {
+    thread = {
+      id: uid("thr-"),
+      ad_id: input.ad_id,
+      vendor_id: user.id,
+      customer_id: ad.owner_id,
+      created_at: Date.now(),
+      last_message_at: Date.now(),
+    }
+    db.threads.push(thread)
+  }
+
+  const quote: Quote = {
+    id: uid("quo-"),
+    ad_id: input.ad_id,
+    vendor_id: user.id,
+    price_inr: input.price_inr,
+    delivery_days: input.delivery_days,
+    message: input.message,
+    status: "pending",
+    created_at: Date.now(),
+    updated_at: Date.now(),
+    thread_id: thread.id,
+  }
+
+  db.quotes.push(quote)
+  
+  // Auto-create a message in the thread with quote details
+  const msg: Message = {
+    id: uid("msg-"),
+    thread_id: thread.id,
+    sender_id: user.id,
+    text: `📋 **Quote Submitted**\n💰 Price: ₹${input.price_inr.toLocaleString('en-IN')}\n⏱️ Delivery: ${input.delivery_days} days\n\n${input.message}`,
+    timestamp: Date.now(),
+  }
+  db.messages.push(msg)
+  thread.last_message_at = msg.timestamp
+  
+  saveDB(db)
+  return quote
+}
+
+/**
+ * Get all quotes for a specific ad
+ */
+export function listQuotesForAd(ad_id: string) {
+  const db = loadDB()
+  return db.quotes.filter((q) => q.ad_id === ad_id).sort((a, b) => b.created_at - a.created_at)
+}
+
+/**
+ * Get all quotes submitted by a vendor
+ */
+export function listQuotesByVendor(vendor_id: string) {
+  const db = loadDB()
+  return db.quotes.filter((q) => q.vendor_id === vendor_id).sort((a, b) => b.created_at - a.created_at)
+}
+
+/**
+ * Get a single quote by ID
+ */
+export function getQuote(quote_id: string) {
+  const db = loadDB()
+  return db.quotes.find((q) => q.id === quote_id)
+}
+
+/**
+ * Update quote status (customer accepts/rejects, vendor withdraws)
+ */
+export function updateQuoteStatus(quote_id: string, new_status: QuoteStatus) {
+  const db = loadDB()
+  const user = getCurrentUser()
+  const quote = db.quotes.find((q) => q.id === quote_id)
+  
+  if (!quote) throw new Error("Quote not found")
+  
+  const ad = getAd(quote.ad_id)
+  if (!ad) throw new Error("Ad not found")
+  
+  // Validate permissions
+  if (new_status === "accepted" || new_status === "rejected") {
+    if (!user || user.id !== ad.owner_id) throw new Error("Only the ad owner can accept/reject quotes")
+  } else if (new_status === "withdrawn") {
+    if (!user || user.id !== quote.vendor_id) throw new Error("Only the vendor can withdraw their quote")
+  }
+  
+  // If accepting, reject all other pending quotes for this ad
+  if (new_status === "accepted") {
+    db.quotes.forEach((q) => {
+      if (q.ad_id === quote.ad_id && q.id !== quote_id && q.status === "pending") {
+        q.status = "rejected"
+        q.updated_at = Date.now()
+      }
+    })
+    // Close the ad
+    ad.status = "closed"
+  }
+  
+  quote.status = new_status
+  quote.updated_at = Date.now()
+  
+  // Send notification message to thread
+  if (quote.thread_id) {
+    const statusText = new_status === "accepted" ? "✅ Accepted" : new_status === "rejected" ? "❌ Rejected" : "🚫 Withdrawn"
+    const msg: Message = {
+      id: uid("msg-"),
+      thread_id: quote.thread_id,
+      sender_id: user!.id,
+      text: `📋 **Quote ${statusText}**\n\nThe quote for ₹${quote.price_inr.toLocaleString('en-IN')} has been ${new_status}.`,
+      timestamp: Date.now(),
+    }
+    db.messages.push(msg)
+    
+    const thread = db.threads.find((t) => t.id === quote.thread_id)
+    if (thread) thread.last_message_at = msg.timestamp
+  }
+  
+  saveDB(db)
+  return quote
+}
+
+// ===== REVIEW SYSTEM =====
+
+/**
+ * Create a review for a vendor (customer only, must have accepted quote)
+ */
+export function createReview(vendor_id: string, rating: number, comment: string) {
+  const db = loadDB()
+  const user = getCurrentUser()
+  
+  if (!user || user.role !== "customer") throw new Error("Only customers can leave reviews")
+  if (rating < 1 || rating > 5) throw new Error("Rating must be between 1 and 5")
+  
+  // Check if customer has an accepted quote with this vendor
+  const hasAcceptedQuote = db.quotes.some(
+    (q) => q.vendor_id === vendor_id && q.status === "accepted" && 
+    db.ads.some((ad) => ad.id === q.ad_id && ad.owner_id === user.id)
+  )
+  
+  if (!hasAcceptedQuote) {
+    throw new Error("You can only review vendors you've worked with")
+  }
+  
+  // Check if already reviewed
+  const existingReview = db.reviews.find(
+    (r) => r.vendor_id === vendor_id && r.customer_id === user.id
+  )
+  if (existingReview) {
+    throw new Error("You've already reviewed this vendor")
+  }
+  
+  const review: Review = {
+    id: uid("rev-"),
+    vendor_id,
+    customer_id: user.id,
+    rating,
+    comment: comment.trim(),
+    created_at: Date.now(),
+  }
+  
+  db.reviews.push(review)
+  
+  // Update vendor's rating
+  updateVendorRating(vendor_id)
+  
+  saveDB(db)
+  return review
+}
+
+/**
+ * Get all reviews for a vendor
+ */
+export function listReviewsForVendor(vendor_id: string) {
+  const db = loadDB()
+  return db.reviews.filter((r) => r.vendor_id === vendor_id).sort((a, b) => b.created_at - a.created_at)
+}
+
+/**
+ * Calculate and update vendor's average rating
+ */
+function updateVendorRating(vendor_id: string) {
+  const db = loadDB()
+  const vendor = db.users.find((u) => u.id === vendor_id && u.role === "vendor")
+  if (!vendor) return
+  
+  const reviews = db.reviews.filter((r) => r.vendor_id === vendor_id)
+  if (reviews.length === 0) {
+    vendor.rating = undefined
+    vendor.total_reviews = 0
+    return
+  }
+  
+  const avgRating = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
+  vendor.rating = Math.round(avgRating * 10) / 10 // Round to 1 decimal
+  vendor.total_reviews = reviews.length
+}
+
+/**
+ * Get list of all vendors with optional filtering
+ */
+export function listVendors(params?: {
+  specialty?: string
+  minRating?: number
+  location?: string
+}) {
+  const db = loadDB()
+  let vendors = db.users.filter((u) => u.role === "vendor")
+  
+  if (params?.specialty) {
+    vendors = vendors.filter((v) => v.specialties?.includes(params.specialty))
+  }
+  
+  if (params?.minRating) {
+    vendors = vendors.filter((v) => (v.rating ?? 0) >= params.minRating)
+  }
+  
+  if (params?.location && params.location !== "all") {
+    vendors = vendors.filter((v) => v.location === params.location)
+  }
+  
+  // Sort by rating (highest first), then by total reviews
+  return vendors.sort((a, b) => {
+    const ratingDiff = (b.rating ?? 0) - (a.rating ?? 0)
+    if (ratingDiff !== 0) return ratingDiff
+    return (b.total_reviews ?? 0) - (a.total_reviews ?? 0)
+  })
 }

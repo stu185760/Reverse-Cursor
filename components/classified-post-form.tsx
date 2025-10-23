@@ -14,23 +14,33 @@ export default function ClassifiedPostForm() {
   const [category, setCategory] = useState(cats[0]?.slug || "others")
   const [createdId, setCreatedId] = useState<string | null>(null)
   const [images, setImages] = useState<string[]>([])
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault()
-    const vendor_id = user?.id || "anon"
-    const item = createClassified({
-      title,
-      description,
-      price: typeof price === "number" ? price : undefined,
-      images,
-      vendor_id,
-      category,
-    })
-    setCreatedId(item.id)
-    setTitle("")
-    setDescription("")
-    setPrice("")
-    setImages([])
+    if (isSubmitting) return // Prevent double submission
+    
+    try {
+      setIsSubmitting(true)
+      const vendor_id = user?.id || "anon"
+      const item = createClassified({
+        title,
+        description,
+        price: typeof price === "number" ? price : undefined,
+        images,
+        vendor_id,
+        category,
+      })
+      setCreatedId(item.id)
+      setTitle("")
+      setDescription("")
+      setPrice("")
+      setImages([])
+    } catch (error) {
+      alert(error instanceof Error ? error.message : "Failed to post classified")
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -87,8 +97,12 @@ export default function ClassifiedPostForm() {
           <ImageUpload value={images} onChange={(next) => setImages(next.slice(0, 8))} />
           <p className="text-xs text-muted-foreground mt-1">Add up to 8 images. JPG/PNG supported.</p>
         </div>
-        <button type="submit" className="rounded-md bg-foreground px-4 py-2 text-background">
-          Post
+        <button 
+          type="submit" 
+          disabled={isSubmitting}
+          className="rounded-md bg-foreground px-4 py-2 text-background disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {isSubmitting ? "Posting..." : "Post"}
         </button>
         {createdId && (
           <p className="text-sm text-muted-foreground">

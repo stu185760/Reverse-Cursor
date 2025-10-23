@@ -4,105 +4,109 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* neutrals */
-  --background: #ffffff;
-  --foreground: #333333;
-  --card: #ffffff;
-  --card-foreground: #333333;
-  --popover: #ffffff;
-  --popover-foreground: #333333;
+  /* EasyCustomized Premium Black Theme - Light mode fallback */
+  --background: #1a1a1a;
+  --foreground: #e5e5e5;
+  --card: #262626;
+  --card-foreground: #e5e5e5;
+  --popover: #1f1f1f;
+  --popover-foreground: #e5e5e5;
 
-  /* brand primary: blue */
-  --primary: #3b82f6;
-  --primary-foreground: #ffffff;
+  /* Neon Blue Primary */
+  --primary: #00FFFF;
+  --primary-foreground: #0D0D0D;
 
-  /* subtle accent: amber for highlights (limited usage) */
-  --accent: #e0f2fe;
-  --accent-foreground: #1e3a8a;
+  /* Electric Purple Accent */
+  --accent: #7A00FF;
+  --accent-foreground: #ffffff;
 
-  /* neutrals and borders */
-  --secondary: #f3f4f6;
-  --secondary-foreground: #4b5563;
-  --muted: #f9fafb;
-  --muted-foreground: #6b7280;
-  --border: #e5e7eb;
-  --input: #e5e7eb;
-  --ring: #3b82f6;
+  /* Neutrals for premium black aesthetic */
+  --secondary: #1f1f1f;
+  --secondary-foreground: #a3a3a3;
+  --muted: #2a2a2a;
+  --muted-foreground: #737373;
+  --border: #333333;
+  --input: #262626;
+  --ring: #00FFFF;
 
-  --radius: 0.375rem;
+  --radius: 0.5rem;
 
-  /* charts unchanged */
-  --chart-1: #3b82f6;
-  --chart-2: #2563eb;
-  --chart-3: #1d4ed8;
-  --chart-4: #1e40af;
-  --chart-5: #1e3a8a;
-  --sidebar: #f9fafb;
-  --sidebar-foreground: #333333;
-  --sidebar-primary: #3b82f6;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #e0f2fe;
-  --sidebar-accent-foreground: #1e3a8a;
-  --sidebar-border: #e5e7eb;
-  --sidebar-ring: #3b82f6;
+  /* Charts with neon theme */
+  --chart-1: #00FFFF;
+  --chart-2: #00CCCC;
+  --chart-3: #7A00FF;
+  --chart-4: #9933FF;
+  --chart-5: #CC66FF;
+  --sidebar: #0D0D0D;
+  --sidebar-foreground: #e5e5e5;
+  --sidebar-primary: #00FFFF;
+  --sidebar-primary-foreground: #0D0D0D;
+  --sidebar-accent: #7A00FF;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #262626;
+  --sidebar-ring: #00FFFF;
   --font-serif: 'Source Serif 4', 'Source Serif 4 Fallback';
   --font-sans: 'Inter', 'Inter Fallback';
   --font-mono: 'Geist Mono', 'Geist Mono Fallback';
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
   --shadow-x: 0px;
-  --shadow-y: 1px;
-  --shadow-blur: 4px;
+  --shadow-y: 4px;
+  --shadow-blur: 16px;
   --shadow-spread: 0px;
-  --shadow-opacity: 0.2;
-  --shadow-color: #000000;}
+  --shadow-opacity: 0.4;
+  --shadow-color: #00FFFF;}
 
 .dark {
-  --background: #171717;
+  /* Jet Black Background - PRD Specification */
+  --background: #0D0D0D;
   --foreground: #e5e5e5;
-  --card: #262626;
+  --card: #1a1a1a;
   --card-foreground: #e5e5e5;
-  --popover: #262626;
+  --popover: #1a1a1a;
   --popover-foreground: #e5e5e5;
 
-  /* match dark mode to new brand primary */
-  --primary: #3b82f6;
-  --primary-foreground: #ffffff;
+  /* Neon Blue Primary */
+  --primary: #00FFFF;
+  --primary-foreground: #0D0D0D;
 
-  --accent: #1e3a8a;
-  --accent-foreground: #bfdbfe;
+  /* Electric Purple Accent */
+  --accent: #7A00FF;
+  --accent-foreground: #ffffff;
 
-  --secondary: #262626;
-  --secondary-foreground: #e5e5e5;
+  /* Premium black neutrals */
+  --secondary: #1a1a1a;
+  --secondary-foreground: #a3a3a3;
   --muted: #262626;
-  --muted-foreground: #a3a3a3;
-  --border: #404040;
-  --input: #404040;
-  --ring: #3b82f6;
+  --muted-foreground: #737373;
+  --border: #2a2a2a;
+  --input: #1a1a1a;
+  --ring: #00FFFF;
 
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
 
-  --chart-1: #60a5fa;
-  --chart-2: #3b82f6;
-  --chart-3: #2563eb;
-  --chart-4: #1d4ed8;
-  --chart-5: #1e40af;
+  /* Neon charts */
+  --chart-1: #00FFFF;
+  --chart-2: #00CCCC;
+  --chart-3: #7A00FF;
+  --chart-4: #9933FF;
+  --chart-5: #CC66FF;
 
-  --sidebar: #171717;
+  --sidebar: #0D0D0D;
   --sidebar-foreground: #e5e5e5;
-  --sidebar-primary: #3b82f6;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #1e3a8a;
-  --sidebar-accent-foreground: #bfdbfe;
-  --sidebar-border: #404040;
-  --sidebar-ring: #3b82f6;
+  --sidebar-primary: #00FFFF;
+  --sidebar-primary-foreground: #0D0D0D;
+  --sidebar-accent: #7A00FF;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #1a1a1a;
+  --sidebar-ring: #00FFFF;
   --shadow-x: 0px;
-  --shadow-y: 1px;
-  --shadow-blur: 2px;
+  --shadow-y: 4px;
+  --shadow-blur: 20px;
   --shadow-spread: 0px;
-  --shadow-opacity: 0.05;
-  --shadow-color: #000000;
+  --shadow-opacity: 0.5;
+  --shadow-color: #00FFFF;
 }
 
 @theme inline {
@@ -167,5 +171,70 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  /* Glassmorphic card effect */
+  .glass-card {
+    background: rgba(26, 26, 26, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(0, 255, 255, 0.15);
+  }
+  
+  /* Neon glow effects */
+  .neon-glow-cyan {
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5), 0 0 20px rgba(0, 255, 255, 0.3);
+  }
+  
+  .neon-glow-purple {
+    box-shadow: 0 0 10px rgba(122, 0, 255, 0.5), 0 0 20px rgba(122, 0, 255, 0.3);
+  }
+  
+  .neon-text-cyan {
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.8), 0 0 20px rgba(0, 255, 255, 0.4);
+  }
+  
+  .neon-text-purple {
+    text-shadow: 0 0 10px rgba(122, 0, 255, 0.8), 0 0 20px rgba(122, 0, 255, 0.4);
+  }
+
+  /* Gradient overlays */
+  .gradient-cyan-purple {
+    background: linear-gradient(135deg, rgba(0, 255, 255, 0.1) 0%, rgba(122, 0, 255, 0.1) 100%);
+  }
+  
+  .gradient-black-cyan {
+    background: linear-gradient(180deg, #0D0D0D 0%, rgba(0, 255, 255, 0.05) 100%);
+  }
+
+  /* Accessibility improvements */
+  .focus-visible {
+    @apply outline-2 outline-offset-2 outline-[#00FFFF];
+  }
+
+  /* Touch target improvements for mobile */
+  @media (max-width: 768px) {
+    button, a[role="button"], [role="button"] {
+      min-height: 44px;
+      min-width: 44px;
+    }
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Reduce motion for accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }

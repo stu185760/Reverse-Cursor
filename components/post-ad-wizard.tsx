@@ -12,6 +12,7 @@ import { createAd, getCategories, getCurrentUser } from "@/lib/local-db"
 import { refreshAds } from "@/hooks/use-local"
 import ImageUpload from "@/components/image-upload"
 import LocationSelect from "@/components/location-select"
+import { validateAdInput, VALIDATION_LIMITS } from "@/lib/validation"
 
 type Step = 1 | 2 | 3 | 4
 
@@ -23,10 +24,12 @@ export function PostAdWizard() {
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
   const [category, setCategory] = useState<string | undefined>()
-  const [location, setLocation] = useState("Mumbai")
+  const [location, setLocation] = useState("Mumbai") // Default to Mumbai (India)
   const [priceFrom, setPriceFrom] = useState<string>("")
   const [priceTo, setPriceTo] = useState<string>("")
   const [uploads, setUploads] = useState<string[]>([])
+  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({})
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const images = uploads.slice(0, 8)
 
   if (getCurrentUser()?.role !== "customer") {
@@ -82,12 +85,49 @@ export function PostAdWizard() {
         {step === 2 && (
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="title">Title</Label>
-              <Input id="title" value={title} onChange={(e) => setTitle(e.target.value)} />
+              <Label htmlFor="title">Title (max {VALIDATION_LIMITS.TITLE_MAX} characters)</Label>
+              <Input 
+                id="title" 
+                value={title} 
+                onChange={(e) => {
+                  if (e.target.value.length <= VALIDATION_LIMITS.TITLE_MAX) {
+                    setTitle(e.target.value)
+                    setValidationErrors((prev) => ({ ...prev, title: '' }))
+                  }
+                }}
+                aria-invalid={!!validationErrors.title}
+                aria-describedby={validationErrors.title ? "title-error" : undefined}
+                className={validationErrors.title ? "border-destructive" : ""}
+              />
+              {validationErrors.title && (
+                <p id="title-error" className="text-sm text-destructive">{validationErrors.title}</p>
+              )}
+              <p className="text-xs text-muted-foreground">
+                {title.length}/{VALIDATION_LIMITS.TITLE_MAX}
+              </p>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="desc">Description</Label>
-              <Textarea id="desc" value={description} onChange={(e) => setDescription(e.target.value)} rows={6} />
+              <Label htmlFor="desc">Description (max {VALIDATION_LIMITS.DESCRIPTION_MAX} characters)</Label>
+              <Textarea 
+                id="desc" 
+                value={description} 
+                onChange={(e) => {
+                  if (e.target.value.length <= VALIDATION_LIMITS.DESCRIPTION_MAX) {
+                    setDescription(e.target.value)
+                    setValidationErrors((prev) => ({ ...prev, description: '' }))
+                  }
+                }}
+                rows={6}
+                aria-invalid={!!validationErrors.description}
+                aria-describedby={validationErrors.description ? "desc-error" : undefined}
+                className={validationErrors.description ? "border-destructive" : ""}
+              />
+              {validationErrors.description && (
+                <p id="desc-error" className="text-sm text-destructive">{validationErrors.description}</p>
+              )}
+              <p className="text-xs text-muted-foreground">
+                {description.length}/{VALIDATION_LIMITS.DESCRIPTION_MAX}
+              </p>
             </div>
             <div className="space-y-2">
               <Label htmlFor="loc">Location</Label>
@@ -101,11 +141,11 @@ export function PostAdWizard() {
               />
             </div>
             <div className="space-y-2">
-              <Label>Price range (optional)</Label>
+              <Label>Budget range (optional) - in INR (₹)</Label>
               <div className="grid grid-cols-2 gap-2">
                 <div>
                   <Label htmlFor="price-from" className="text-xs text-muted-foreground">
-                    From
+                    From (₹)
                   </Label>
                   <Input
                     id="price-from"
@@ -113,12 +153,12 @@ export function PostAdWizard() {
                     min={0}
                     value={priceFrom}
                     onChange={(e) => setPriceFrom(e.target.value)}
-                    placeholder="e.g. 1000"
+                    placeholder="e.g. ₹1,000"
                   />
                 </div>
                 <div>
                   <Label htmlFor="price-to" className="text-xs text-muted-foreground">
-                    To
+                    To (₹)
                   </Label>
                   <Input
                     id="price-to"
@@ -126,11 +166,11 @@ export function PostAdWizard() {
                     min={0}
                     value={priceTo}
                     onChange={(e) => setPriceTo(e.target.value)}
-                    placeholder="e.g. 5000"
+                    placeholder="e.g. ₹5,000"
                   />
                 </div>
               </div>
-              <p className="text-xs text-muted-foreground">Leave blank if you don’t have a range.</p>
+              <p className="text-xs text-muted-foreground">Leave blank if you don't have a specific budget in mind.</p>
             </div>
             <div className="flex justify-between">
               <Button variant="outline" onClick={() => setStep(1)}>
@@ -181,7 +221,10 @@ export function PostAdWizard() {
               </Button>
               <Button
                 onClick={() => {
+                  if (isSubmitting) return // Prevent double submission
+                  
                   try {
+                    setIsSubmitting(true)
                     const pf = priceFrom.trim() ? Number(priceFrom) : undefined
                     const pt = priceTo.trim() ? Number(priceTo) : undefined
                     const ad = createAd({
@@ -196,11 +239,14 @@ export function PostAdWizard() {
                     refreshAds()
                     router.push(`/ads/${ad.id}`)
                   } catch (e: any) {
+                    setIsSubmitting(false)
                     alert(e?.message ?? "Failed to publish")
                   }
                 }}
+                disabled={isSubmitting}
+                aria-label="Publish your ad"
               >
-                Publish
+                {isSubmitting ? "Publishing..." : "Publish"}
               </Button>
             </div>
           </div>

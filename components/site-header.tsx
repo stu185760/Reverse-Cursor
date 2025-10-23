@@ -7,9 +7,16 @@ import { cn } from "@/lib/utils"
 import { useState, useEffect } from "react"
 import { Menu, X, LogOut } from "lucide-react"
 import Image from "next/image"
+import { NotificationBell } from "./notification-bell"
+import { RoleSwitcher } from "./role-switcher"
 
 const createClient = async () => {
   try {
+    // Only try to create Supabase client if credentials are configured
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+      return null // App will use local storage instead
+    }
+    
     const { createClient: createSupabaseClient } = await import("@/lib/supabase/client")
     return createSupabaseClient()
   } catch (error) {
@@ -78,11 +85,12 @@ export function SiteHeader() {
   }
 
   return (
-    <header className="border-b bg-card/80 backdrop-blur supports-[backdrop-filter]:bg-card/60 sticky top-0 z-50">
+    <header className="border-b border-[#2a2a2a] bg-[#0D0D0D]/95 backdrop-blur-lg sticky top-0 z-50">
       <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 font-semibold text-lg md:text-xl">
-          
-          <span className="text-sm sm:text-base md:text-lg">EasyCustomized</span>
+        <Link href="/" className="flex items-center gap-2 font-bold text-lg md:text-xl group">
+          <span className="text-sm sm:text-base md:text-lg">
+            Easy<span className="text-[#00FFFF] group-hover:neon-text-cyan transition-all">Customized</span>
+          </span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-2">
@@ -91,8 +99,8 @@ export function SiteHeader() {
               key={n.href}
               href={n.href}
               className={cn(
-                "px-3 py-2 rounded-md text-sm hover:bg-muted",
-                pathname === n.href && "bg-muted font-medium",
+                "px-3 py-2 rounded-md text-sm hover:bg-[#1a1a1a] transition-colors",
+                pathname === n.href && "bg-[#1a1a1a] text-[#00FFFF] font-medium",
               )}
             >
               {n.label}
@@ -101,16 +109,20 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden md:flex items-center gap-2">
+          {/* Role Switcher - Always visible for demo/testing */}
+          <RoleSwitcher />
+          
           {!isLoading && (
             <>
               {user ? (
                 <>
+                  <NotificationBell />
                   <Link href="/messages">
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" className="border-[#00FFFF]/50 text-[#00FFFF] hover:bg-[#00FFFF]/10">
                       Messages
                     </Button>
                   </Link>
-                  <Button variant="outline" size="sm" onClick={handleLogout}>
+                  <Button variant="outline" size="sm" onClick={handleLogout} className="border-gray-600 hover:bg-[#1a1a1a]">
                     <LogOut className="w-4 h-4 mr-2" />
                     Logout
                   </Button>
@@ -118,12 +130,12 @@ export function SiteHeader() {
               ) : (
                 <>
                   <Link href="/auth/login">
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" className="border-[#00FFFF]/50 text-[#00FFFF] hover:bg-[#00FFFF]/10">
                       Login
                     </Button>
                   </Link>
                   <Link href="/auth/sign-up">
-                    <Button size="sm">Sign Up</Button>
+                    <Button size="sm" className="bg-[#00FFFF] hover:bg-[#00CCCC] text-black font-semibold">Sign Up</Button>
                   </Link>
                 </>
               )}
@@ -141,16 +153,22 @@ export function SiteHeader() {
       </div>
 
       {mobileMenuOpen && (
-        <div className="md:hidden border-t bg-card">
+        <div className="md:hidden border-t border-[#2a2a2a] bg-[#0D0D0D]">
           <nav className="flex flex-col px-4 py-3 gap-1">
+            {/* Role Switcher - Mobile */}
+            <div className="pb-2 border-b border-[#2a2a2a] mb-2">
+              <div className="text-xs text-gray-400 mb-2 px-3">Switch Role (Demo)</div>
+              <RoleSwitcher />
+            </div>
+            
             {nav.map((n) => (
               <Link
                 key={n.href}
                 href={n.href}
                 onClick={() => setMobileMenuOpen(false)}
                 className={cn(
-                  "px-3 py-2 rounded-md text-sm hover:bg-muted",
-                  pathname === n.href && "bg-muted font-medium",
+                  "px-3 py-2 rounded-md text-sm hover:bg-[#1a1a1a]",
+                  pathname === n.href && "bg-[#1a1a1a] text-[#00FFFF] font-medium",
                 )}
               >
                 {n.label}

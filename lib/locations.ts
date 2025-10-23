@@ -1,4 +1,10 @@
-export const INDIA_CITIES = [
+// India-focused location system for EasyCustomized
+export const SPECIAL_LOCATIONS = [
+  "All India",
+  "Remote",
+]
+
+export const MAJOR_CITIES = [
   "Mumbai",
   "Delhi NCR",
   "Bengaluru",
@@ -7,6 +13,9 @@ export const INDIA_CITIES = [
   "Kolkata",
   "Pune",
   "Ahmedabad",
+]
+
+export const OTHER_CITIES = [
   "Jaipur",
   "Surat",
   "Lucknow",
@@ -21,23 +30,27 @@ export const INDIA_CITIES = [
   "Ghaziabad",
   "Noida",
   "Gurugram",
+  "Chandigarh",
+  "Coimbatore",
+  "Kochi",
+  "Mysuru",
+  "Srinagar",
+  "Thiruvananthapuram",
 ]
 
-export const GLOBAL_CITIES = [
-  "Remote",
-  "New York",
-  "San Francisco",
-  "Los Angeles",
-  "London",
-  "Paris",
-  "Berlin",
-  "Amsterdam",
+// International cities (limited - India-focused platform)
+export const INTERNATIONAL_CITIES = [
   "Dubai",
   "Singapore",
-  "Tokyo",
-  "Seoul",
-  "Sydney",
-  "Toronto",
+  "London",
+  "New York",
 ]
 
-export const ALL_LOCATIONS: string[] = [...INDIA_CITIES, ...GLOBAL_CITIES]
+export const INDIA_CITIES = [...MAJOR_CITIES, ...OTHER_CITIES]
+
+export const ALL_LOCATIONS: string[] = [
+  ...SPECIAL_LOCATIONS,
+  ...MAJOR_CITIES,
+  ...OTHER_CITIES,
+  ...INTERNATIONAL_CITIES,
+]
