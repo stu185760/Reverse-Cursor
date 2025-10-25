@@ -7,37 +7,37 @@ const categories = [
     name: "Jewelry",
     description: "Custom designs and artisan pieces",
     image: "/bridal-jewelry.jpg",
-    href: "/post-ad?category=jewellery",
+    slug: "jewelry",
   },
   {
     name: "Footwear",
     description: "Handcrafted shoes and boots",
     image: "/ornate-loafers.webp",
-    href: "/post-ad?category=footwear",
+    slug: "footwear",
   },
   {
     name: "Clothing",
     description: "Embroidered and custom garments",
     image: "/embroidered-fabric.jpg",
-    href: "/post-ad?category=clothing",
+    slug: "clothing",
   },
   {
     name: "Automobiles",
     description: "Custom car modifications",
     image: "/red-automobile.jpg",
-    href: "/post-ad?category=automobiles",
+    slug: "automobile",
   },
   {
     name: "Gifting",
     description: "Personalized gift items",
     image: "/gifting-craft.jpg",
-    href: "/post-ad?category=gifting",
+    slug: "gifting",
   },
   {
     name: "Furniture",
     description: "Bespoke furniture pieces",
     image: "/colorful-embroidery.jpg",
-    href: "/post-ad?category=furniture",
+    slug: "furniture",
   },
 ]
 
@@ -51,7 +51,7 @@ export function CategoryShowcase() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {categories.map((category) => (
-            <Link key={category.name} href={category.href}>
+            <Link key={category.name} href={`/categories/${category.slug}`}>
               <div className="group cursor-pointer h-full">
                 <div className="relative overflow-hidden rounded-xl mb-4 aspect-[4/3] shadow-md hover:shadow-xl transition-all duration-300">
                   <Image
@@ -71,7 +71,7 @@ export function CategoryShowcase() {
                   variant="outline"
                   className="w-full group-hover:bg-slate-900 group-hover:text-white transition-colors bg-transparent"
                 >
-                  Post Request
+                  Explore & Post
                 </Button>
               </div>
             </Link>

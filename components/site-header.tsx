@@ -9,6 +9,7 @@ import { Menu, X, LogOut } from "lucide-react"
 import Image from "next/image"
 import { NotificationBell } from "./notification-bell"
 import { RoleSwitcher } from "./role-switcher"
+import { getCurrentUser, type Role } from "@/lib/local-db"
 
 const createClient = async () => {
   try {
@@ -25,13 +26,15 @@ const createClient = async () => {
   }
 }
 
-const nav = [
-  { href: "/", label: "Home" },
-  { href: "/ads", label: "Browse Ads" },
-  { href: "/vendor/browse", label: "Vendor Browse" },
-  { href: "/classifieds", label: "Classifieds" },
-  { href: "/post-ad", label: "Post Ad" },
-  { href: "/classifieds/post", label: "Post Classified" },
+// Define navigation items with role access
+// Home is available to all, other items are role-specific
+const allNavItems = [
+  { href: "/", label: "Home", roles: ["customer", "vendor", "admin"] as Role[] },
+  { href: "/ads", label: "Browse Ads", roles: ["vendor", "admin"] as Role[] }, // Vendor sees customer ads
+  { href: "/vendor/browse", label: "Vendor Browse", roles: ["customer", "admin"] as Role[] }, // Customer browses vendors
+  { href: "/classifieds", label: "Classifieds", roles: ["customer", "vendor", "admin"] as Role[] }, // Everyone
+  { href: "/post-ad", label: "Post Ad", roles: ["customer", "admin"] as Role[] }, // Customer posts requirements
+  { href: "/classifieds/post", label: "Post Classified", roles: ["vendor", "admin"] as Role[] }, // Vendor posts products
 ]
 
 export function SiteHeader() {
@@ -40,6 +43,26 @@ export function SiteHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [user, setUser] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [currentRole, setCurrentRole] = useState<Role>("customer")
+
+  // Track current role for navigation filtering
+  useEffect(() => {
+    const updateRole = () => {
+      const localUser = getCurrentUser()
+      setCurrentRole(localUser?.role || "customer")
+    }
+    
+    updateRole()
+    
+    // Listen for role changes (from RoleSwitcher)
+    window.addEventListener("storage", updateRole)
+    const interval = setInterval(updateRole, 500) // Poll for changes in same tab
+    
+    return () => {
+      window.removeEventListener("storage", updateRole)
+      clearInterval(interval)
+    }
+  }, [])
 
   useEffect(() => {
     const initAuth = async () => {
@@ -71,6 +94,9 @@ export function SiteHeader() {
 
     initAuth()
   }, [])
+
+  // Filter navigation items based on current role
+  const nav = allNavItems.filter(item => item.roles.includes(currentRole))
 
   const handleLogout = async () => {
     try {

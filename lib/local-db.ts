@@ -839,3 +839,21 @@ export function listVendors(params?: {
     return (b.total_reviews ?? 0) - (a.total_reviews ?? 0)
   })
 }
+
+/**
+ * Get classifieds by category
+ */
+export function getClassifiedsByCategory(categorySlug: string): Classified[] {
+  const db = loadDB()
+  return (db.classifieds || []).filter(
+    (c) => c.category === categorySlug && c.status === "active"
+  )
+}
+
+/**
+ * Get all active classifieds
+ */
+export function getAllClassifieds(): Classified[] {
+  const db = loadDB()
+  return (db.classifieds || []).filter((c) => c.status === "active")
+}

@@ -1,0 +1,20 @@
+# Copy this file to .env.local and fill in your Supabase credentials
+
+# Supabase Configuration
+# Get these values from your Supabase project settings (https://app.supabase.com)
+
+# Project URL (looks like: https://xxxxx.supabase.co)
+NEXT_PUBLIC_SUPABASE_URL=your_project_url_here
+
+# Anon/Public Key (safe to expose in frontend)
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key_here
+
+# Service Role Key (NEVER expose in frontend, server-side only)
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key_here
+
+# App Configuration
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+
+# Optional: For production
+# NEXT_PUBLIC_APP_URL=https://yourdomain.com
+
