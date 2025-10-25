@@ -1,9 +1,9 @@
-# Reverse marketplace app
+# Deploy Next.js Supabase
 
 *Automatically synced with your [v0.app](https://v0.app) deployments*
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/201710100887-9210s-projects/v0-reverse-marketplace-app)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/projects/HWGqU42Bhnp)
+[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/stu185760s-projects/v0-deploy-next-js-supabase)
+[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/projects/tM9pZ9q4EUD)
 
 ## Overview
 
@@ -14,13 +14,13 @@ Any changes you make to your deployed app will be automatically pushed to this r
 
 Your project is live at:
 
-**[https://vercel.com/201710100887-9210s-projects/v0-reverse-marketplace-app](https://vercel.com/201710100887-9210s-projects/v0-reverse-marketplace-app)**
+**[https://vercel.com/stu185760s-projects/v0-deploy-next-js-supabase](https://vercel.com/stu185760s-projects/v0-deploy-next-js-supabase)**
 
 ## Build your app
 
 Continue building your app on:
 
-**[https://v0.app/chat/projects/HWGqU42Bhnp](https://v0.app/chat/projects/HWGqU42Bhnp)**
+**[https://v0.app/chat/projects/tM9pZ9q4EUD](https://v0.app/chat/projects/tM9pZ9q4EUD)**
 
 ## How It Works
 

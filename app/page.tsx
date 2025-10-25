@@ -1,24 +1,15 @@
-import { Hero } from "@/components/hero"
-import { CategoryShowcase } from "@/components/category-showcase"
-import { CraftsmanshipSection } from "@/components/craftsmanship-section"
-import { TestimonialsSection } from "@/components/testimonials-section"
-import { PWADownloadSection } from "@/components/pwa-download-section"
-import { AdList } from "@/components/ad-list"
-
-export default function Page() {
+export default function Home() {
   return (
-    <main className="bg-[#0D0D0D]">
-      <Hero />
-      <CategoryShowcase />
-      <CraftsmanshipSection />
-      <PWADownloadSection />
-      <TestimonialsSection />
-      <section className="mx-auto max-w-6xl px-4 py-12 md:py-16 space-y-6">
-        <h2 className="text-2xl md:text-3xl font-bold text-white">
-          Recent <span className="text-[#00FFFF]">Requests</span>
-        </h2>
-        <AdList />
-      </section>
+    <main className="flex min-h-screen flex-col items-center justify-center p-4">
+      <div className="text-center">
+        <h1 className="text-4xl font-bold mb-4">Welcome to Reverse Cursor</h1>
+        <p className="text-lg text-muted-foreground mb-8">Your Next.js 15 app is ready for deployment</p>
+        <div className="space-y-2 text-sm text-muted-foreground">
+          <p>✓ Supabase integration configured</p>
+          <p>✓ Environment variables set up</p>
+          <p>✓ Ready to deploy to Vercel</p>
+        </div>
+      </div>
     </main>
   )
 }
