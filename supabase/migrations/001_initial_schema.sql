@@ -355,19 +355,19 @@ CREATE POLICY "Ad owners can update quote status"
 CREATE POLICY "Users can view their messages"
   ON public.messages FOR SELECT
   USING (
-    auth.uid() = sender_id OR 
-    auth.uid() = receiver_id
+    auth.uid() = public.messages.sender_id OR 
+    auth.uid() = public.messages.receiver_id
   );
 
 -- Authenticated users can send messages
 CREATE POLICY "Users can send messages"
   ON public.messages FOR INSERT
-  WITH CHECK (auth.uid() = sender_id);
+  WITH CHECK (auth.uid() = public.messages.sender_id);
 
 -- Users can update messages they received (mark as read)
 CREATE POLICY "Users can mark received messages as read"
   ON public.messages FOR UPDATE
-  USING (auth.uid() = receiver_id);
+  USING (auth.uid() = public.messages.receiver_id);
 
 -- ============================================
 -- REVIEWS POLICIES
