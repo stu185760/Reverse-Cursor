@@ -4,7 +4,7 @@
 
 ## 🎯 COPY THIS PROMPT:
 
-```
+\`\`\`
 Hi! I need help with my Next.js 15 app that's already connected to Supabase.
 
 CURRENT SITUATION:
@@ -71,13 +71,13 @@ SUPABASE DASHBOARD ACCESS:
 ✅ Project: supabase-blue-umbrella
 
 Please guide me through the post-deployment steps to ensure everything is properly connected and working!
-```
+\`\`\`
 
 ---
 
 ## 🔄 ALTERNATIVE SHORTER VERSION:
 
-```
+\`\`\`
 Need help configuring Supabase post-deployment:
 
 SETUP:
@@ -93,13 +93,13 @@ NEED HELP WITH:
 5. How to confirm data persists to Supabase vs localStorage?
 
 Guide me through: deployment URL, image storage setup, and database configuration!
-```
+\`\`\`
 
 ---
 
 ## 💡 OR USE THIS SIMPLE ASK:
 
-```
+\`\`\`
 My Next.js marketplace app is deployed with Supabase configured.
 
 I need help with:
@@ -109,7 +109,7 @@ I need help with:
 4. Verify database tables (ads, users, photos) are working?
 
 Please guide me through image storage setup and database configuration!
-```
+\`\`\`
 
 ---
 
@@ -129,4 +129,3 @@ They should tell you:
 3. How to test the connection
 
 Then come back here and I'll help you implement any code changes needed! 🚀
-
