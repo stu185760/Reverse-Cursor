@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Ad Creation</title>
+</head>
+<body>
+    <h1>Debug Ad Creation</h1>
+    <p>Open browser console (F12) and check the logs when creating an ad.</p>
+    <p>Look for these log messages:</p>
+    <ul>
+        <li>[createAd] Original ad data: ...</li>
+        <li>[createAd] Status validation: ...</li>
+        <li>[createAd] Final ad data being inserted: ...</li>
+        <li>[createAd] Database error details: ... (if error occurs)</li>
+    </ul>
+    
+    <h2>Test Data</h2>
+    <p>Try creating an ad with these values:</p>
+    <ul>
+        <li>Category: Jewelry</li>
+        <li>Title: Test Ad for Debugging</li>
+        <li>Description: This is a test ad to debug the constraint issue</li>
+        <li>Location: Mumbai</li>
+        <li>Min Budget: 1000</li>
+        <li>Max Budget: 5000</li>
+    </ul>
+    
+    <h2>What to Check</h2>
+    <ol>
+        <li>Open browser console (F12 → Console tab)</li>
+        <li>Go to Post Ad page</li>
+        <li>Fill out the form</li>
+        <li>Submit the form</li>
+        <li>Look for the detailed logs in console</li>
+        <li>Copy the error details and share them</li>
+    </ol>
+</body>
+</html>

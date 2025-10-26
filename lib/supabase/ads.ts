@@ -23,11 +23,21 @@ export async function createAd(ad: Omit<Ad, "id" | "created_at" | "updated_at">)
   console.log("[createAd] Original ad data:", JSON.stringify(ad, null, 2))
   console.log("[createAd] Status validation:", {
     original: ad.status,
+    originalType: typeof ad.status,
     normalized: statusValue,
+    normalizedType: typeof statusValue,
     final: finalStatus,
-    validStatuses
+    finalType: typeof finalStatus,
+    validStatuses,
+    isValid: validStatuses.includes(finalStatus as any)
   })
   console.log("[createAd] Final ad data being inserted:", JSON.stringify(adData, null, 2))
+  console.log("[createAd] Status field specifically:", {
+    value: adData.status,
+    type: typeof adData.status,
+    length: adData.status?.length,
+    charCodes: adData.status?.split('').map(c => c.charCodeAt(0))
+  })
   
   const { data, error } = await supabase.from("ads").insert([adData]).select().single()
 
