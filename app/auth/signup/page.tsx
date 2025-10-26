@@ -1,112 +1,178 @@
 "use client"
 
-import type React from "react"
-
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
 import { getSupabaseClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import Link from "next/link"
 
-export default function SignUp() {
-  const router = useRouter()
-  const [loading, setLoading] = useState(false)
+export default function SignupPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [fullName, setFullName] = useState("")
   const [role, setRole] = useState<"customer" | "vendor">("customer")
   const [error, setError] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [success, setSuccess] = useState(false)
+  const router = useRouter()
+  const supabase = getSupabaseClient()
 
-  const handleSignUp = async (e: React.FormEvent) => {
+  async function handleSignup(e: React.FormEvent) {
     e.preventDefault()
-    setLoading(true)
     setError("")
+    setLoading(true)
 
     try {
-      const supabase = getSupabaseClient()
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
           data: {
             full_name: fullName,
-            role,
+            role: role,
           },
         },
       })
 
       if (error) throw error
 
-      // Profile will be created by trigger, but we can verify
-      router.push("/auth/sign-up-success")
+      if (data.user) {
+        setSuccess(true)
+        setTimeout(() => {
+          router.push("/")
+          router.refresh()
+        }, 2000)
+      }
     } catch (err: any) {
-      setError(err.message)
+      setError(err.message || "Failed to sign up")
     } finally {
       setLoading(false)
     }
   }
 
+  if (success) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background px-4">
+        <div className="w-full max-w-md text-center space-y-4">
+          <div className="rounded-md bg-green-50 p-4">
+            <p className="text-lg font-medium text-green-800">
+              ✅ Account created successfully!
+            </p>
+            <p className="mt-2 text-sm text-green-700">
+              Redirecting to homepage...
+            </p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <main className="flex items-center justify-center min-h-screen">
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle>Create Account</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSignUp} className="space-y-4">
-            {error && <div className="p-3 bg-red-100 text-red-700 rounded text-sm">{error}</div>}
+    <div className="flex min-h-screen items-center justify-center bg-background px-4 py-12">
+      <div className="w-full max-w-md space-y-8">
+        <div className="text-center">
+          <h2 className="text-3xl font-bold">Create an account</h2>
+          <p className="mt-2 text-muted-foreground">
+            Join EasyCustomized today
+          </p>
+        </div>
 
-            <div>
-              <Label htmlFor="fullName">Full Name</Label>
-              <Input id="fullName" value={fullName} onChange={(e) => setFullName(e.target.value)} required />
+        <form onSubmit={handleSignup} className="mt-8 space-y-6">
+          {error && (
+            <div className="rounded-md bg-red-50 p-4 text-sm text-red-800">
+              {error}
             </div>
+          )}
 
+          <div className="space-y-4">
             <div>
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-            </div>
-
-            <div>
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+              <label htmlFor="fullName" className="block text-sm font-medium">
+                Full Name
+              </label>
+              <input
+                id="fullName"
+                name="fullName"
+                type="text"
                 required
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                className="mt-1 block w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                placeholder="John Doe"
               />
             </div>
 
             <div>
-              <Label htmlFor="role">I am a</Label>
-              <Select value={role} onValueChange={(value: any) => setRole(value)}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="customer">Customer (Post Requirements)</SelectItem>
-                  <SelectItem value="vendor">Vendor (Submit Quotes)</SelectItem>
-                </SelectContent>
-              </Select>
+              <label htmlFor="email" className="block text-sm font-medium">
+                Email
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="mt-1 block w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                placeholder="you@example.com"
+              />
             </div>
 
-            <Button type="submit" disabled={loading} className="w-full">
-              {loading ? "Creating account..." : "Sign Up"}
-            </Button>
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium">
+                Password
+              </label>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="new-password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="mt-1 block w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                placeholder="••••••••"
+                minLength={6}
+              />
+              <p className="mt-1 text-xs text-muted-foreground">
+                Must be at least 6 characters
+              </p>
+            </div>
 
-            <p className="text-sm text-center text-muted-foreground">
-              Already have an account?{" "}
-              <Link href="/auth/login" className="text-primary hover:underline">
-                Login
-              </Link>
-            </p>
-          </form>
-        </CardContent>
-      </Card>
-    </main>
+            <div>
+              <label htmlFor="role" className="block text-sm font-medium">
+                I am a...
+              </label>
+              <select
+                id="role"
+                name="role"
+                value={role}
+                onChange={(e) => setRole(e.target.value as "customer" | "vendor")}
+                className="mt-1 block w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+              >
+                <option value="customer">Customer (I need services)</option>
+                <option value="vendor">Vendor (I provide services)</option>
+              </select>
+            </div>
+          </div>
+
+          <Button
+            type="submit"
+            disabled={loading}
+            className="w-full"
+          >
+            {loading ? "Creating account..." : "Sign up"}
+          </Button>
+
+          <p className="text-center text-sm text-muted-foreground">
+            Already have an account?{" "}
+            <Link href="/auth/login" className="font-medium text-primary hover:underline">
+              Login
+            </Link>
+          </p>
+        </form>
+      </div>
+    </div>
   )
 }
+
