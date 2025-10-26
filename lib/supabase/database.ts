@@ -20,14 +20,24 @@ type Profile = Database["public"]["Tables"]["profiles"]["Row"]
 // ============================================
 
 export async function createAd(ad: Omit<AdInsert, "id" | "created_at" | "updated_at">): Promise<Ad> {
+  console.log("[database.ts] createAd called with:", ad)
   const supabase = getSupabaseClient()
+  console.log("[database.ts] Supabase client:", !!supabase)
+  
   const { data, error } = await supabase
     .from("ads")
     .insert(ad)
     .select()
     .single()
   
-  if (error) throw new Error(error.message)
+  console.log("[database.ts] Insert result - data:", data, "error:", error)
+  
+  if (error) {
+    console.error("[database.ts] Database error:", error)
+    throw new Error(error.message)
+  }
+  
+  console.log("[database.ts] Ad created successfully:", data)
   return data
 }
 

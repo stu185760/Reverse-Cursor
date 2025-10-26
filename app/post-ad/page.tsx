@@ -65,16 +65,26 @@ export default function PostAdPage() {
     setSubmitting(true)
 
     try {
+      console.log("=== STARTING AD SUBMISSION ===")
+      console.log("User:", user)
+      
       if (!user) throw new Error("Please log in to post an ad")
 
       // Upload images first (if any)
       let imageUrls: string[] = []
       if (images.length > 0) {
-        imageUrls = await uploadImages("ad-images", images, user.id)
+        console.log(`Uploading ${images.length} images...`)
+        try {
+          imageUrls = await uploadImages("ad-images", images, user.id)
+          console.log("Images uploaded successfully:", imageUrls)
+        } catch (imgError) {
+          console.error("Image upload error:", imgError)
+          throw new Error(`Failed to upload images: ${imgError}`)
+        }
       }
 
-      // Create ad
-      const ad = await createAd({
+      // Create ad data
+      const adData = {
         user_id: user.id,
         title: formData.title,
         description: formData.description,
@@ -84,14 +94,29 @@ export default function PostAdPage() {
         budget_max: formData.budget_max ? parseFloat(formData.budget_max) : null,
         timeline: formData.timeline || null,
         images: imageUrls.length > 0 ? imageUrls : null,
-        status: "active"
-      })
+        status: "active" as const
+      }
+      
+      console.log("Creating ad with data:", adData)
+
+      // Create ad
+      const ad = await createAd(adData)
+      
+      console.log("Ad created successfully:", ad)
+      console.log("Ad ID:", ad.id)
+      console.log("=== AD SUBMISSION COMPLETE ===")
+
+      // Show success message before redirect
+      alert(`✅ Ad posted successfully! ID: ${ad.id}`)
 
       // Redirect to ad detail page
       router.push(`/ads/${ad.id}`)
     } catch (err: any) {
-      console.error("Error posting ad:", err)
-      setError(err.message || "Failed to post ad")
+      console.error("=== ERROR POSTING AD ===")
+      console.error("Error:", err)
+      console.error("Error message:", err.message)
+      console.error("Error stack:", err.stack)
+      setError(err.message || "Failed to post ad. Check console for details.")
       setSubmitting(false)
     }
   }

@@ -10,7 +10,7 @@ export default function SignupPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [fullName, setFullName] = useState("")
-  const [role, setRole] = useState<"customer" | "vendor">("customer")
+  const [userType, setUserType] = useState<"customer" | "vendor">("customer")
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
@@ -30,7 +30,7 @@ export default function SignupPage() {
         options: {
           data: {
             full_name: fullName,
-            role: role,
+            role: userType,
           },
           emailRedirectTo: `${window.location.origin}/auth/callback`,
         },
@@ -150,19 +150,40 @@ export default function SignupPage() {
             </div>
 
             <div>
-              <label htmlFor="role" className="block text-sm font-medium">
-                I am a...
+              <label className="block text-sm font-medium mb-3">
+                What brings you here? *
               </label>
-              <select
-                id="role"
-                name="role"
-                value={role}
-                onChange={(e) => setRole(e.target.value as "customer" | "vendor")}
-                className="mt-1 block w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-              >
-                <option value="customer">Customer (I need services)</option>
-                <option value="vendor">Vendor (I provide services)</option>
-              </select>
+              <div className="space-y-3">
+                <label className="flex items-center p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                  <input
+                    type="radio"
+                    name="userType"
+                    value="customer"
+                    checked={userType === "customer"}
+                    onChange={(e) => setUserType(e.target.value as "customer" | "vendor")}
+                    className="mr-3 w-4 h-4"
+                  />
+                  <div>
+                    <div className="font-medium">I need services</div>
+                    <div className="text-xs text-gray-500">Post requirements and get quotes from vendors</div>
+                  </div>
+                </label>
+                
+                <label className="flex items-center p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                  <input
+                    type="radio"
+                    name="userType"
+                    value="vendor"
+                    checked={userType === "vendor"}
+                    onChange={(e) => setUserType(e.target.value as "customer" | "vendor")}
+                    className="mr-3 w-4 h-4"
+                  />
+                  <div>
+                    <div className="font-medium">I provide services</div>
+                    <div className="text-xs text-gray-500">Browse requirements and send quotes to customers</div>
+                  </div>
+                </label>
+              </div>
             </div>
           </div>
 
