@@ -3,9 +3,24 @@ import type { Ad } from "./types"
 
 export async function createAd(ad: Omit<Ad, "id" | "created_at" | "updated_at">) {
   const supabase = getSupabaseClient()
-  const { data, error } = await supabase.from("ads").insert([ad]).select().single()
+  
+  // Ensure status is valid
+  const validStatuses = ["open", "closed", "in_progress"] as const
+  const adData = {
+    ...ad,
+    status: validStatuses.includes(ad.status as any) ? ad.status : "open"
+  }
+  
+  console.log("[createAd] Inserting ad with data:", JSON.stringify(adData, null, 2))
+  
+  const { data, error } = await supabase.from("ads").insert([adData]).select().single()
 
-  if (error) throw error
+  if (error) {
+    console.error("[createAd] Database error:", error)
+    throw error
+  }
+  
+  console.log("[createAd] Ad created successfully:", data.id)
   return data
 }
 
