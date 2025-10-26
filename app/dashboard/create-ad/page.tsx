@@ -2,10 +2,11 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { getSupabaseClient } from "@/lib/supabase/client"
 import { createAd, uploadAdImage } from "@/lib/supabase/ads"
+import { getProfile } from "@/lib/supabase/profiles"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -15,6 +16,40 @@ import { Label } from "@/components/ui/label"
 export default function CreateAd() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
+  const [authLoading, setAuthLoading] = useState(true)
+  const [isCustomer, setIsCustomer] = useState(false)
+  const [error, setError] = useState("")
+  
+  // Check authentication and role
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const supabase = getSupabaseClient()
+        const { data: { user } } = await supabase.auth.getUser()
+        
+        if (!user) {
+          router.push("/auth/login")
+          return
+        }
+        
+        // Check if user is a customer
+        const profile = await getProfile(user.id)
+        if (profile.role !== "customer") {
+          setError("Only customers can post ads. Please sign up as a customer.")
+          setIsCustomer(false)
+        } else {
+          setIsCustomer(true)
+        }
+      } catch (error) {
+        console.error("Auth check error:", error)
+        router.push("/auth/login")
+      } finally {
+        setAuthLoading(false)
+      }
+    }
+    
+    checkAuth()
+  }, [router])
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -28,6 +63,7 @@ export default function CreateAd() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
+    setError("")
 
     try {
       const supabase = getSupabaseClient()
@@ -35,32 +71,97 @@ export default function CreateAd() {
         data: { user },
       } = await supabase.auth.getUser()
 
-      if (!user) throw new Error("Not authenticated")
+      if (!user) {
+        setError("You must be logged in to create an ad")
+        router.push("/auth/login")
+        return
+      }
+
+      // Validate budget
+      const minBudget = Number.parseFloat(formData.budget_min)
+      const maxBudget = Number.parseFloat(formData.budget_max)
+      
+      if (minBudget <= 0 || maxBudget <= 0) {
+        setError("Budget must be greater than 0")
+        return
+      }
+      
+      if (minBudget > maxBudget) {
+        setError("Minimum budget cannot be greater than maximum budget")
+        return
+      }
 
       // Create ad
+      console.log("Creating ad with data:", {
+        user_id: user.id,
+        title: formData.title,
+        category: formData.category,
+        location: formData.location,
+        budget: `${minBudget} - ${maxBudget}`
+      })
+      
       const ad = await createAd({
         user_id: user.id,
         title: formData.title,
         description: formData.description,
         category: formData.category,
         location: formData.location,
-        budget_min: Number.parseFloat(formData.budget_min),
-        budget_max: Number.parseFloat(formData.budget_max),
+        budget_min: minBudget,
+        budget_max: maxBudget,
         status: "open",
       })
 
+      console.log("Ad created successfully:", ad.id)
+
       // Upload images
-      for (let i = 0; i < images.length; i++) {
-        await uploadAdImage(images[i], ad.id, i)
+      if (images.length > 0) {
+        console.log(`Uploading ${images.length} images...`)
+        for (let i = 0; i < images.length; i++) {
+          await uploadAdImage(images[i], ad.id, i)
+          console.log(`Image ${i + 1}/${images.length} uploaded`)
+        }
       }
 
+      console.log("Ad creation complete, redirecting...")
       router.push("/dashboard")
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error creating ad:", error)
-      alert("Failed to create ad")
+      setError(error.message || "Failed to create ad. Please try again.")
     } finally {
       setLoading(false)
     }
+  }
+
+  if (authLoading) {
+    return (
+      <main className="container mx-auto py-8">
+        <div className="flex items-center justify-center py-12">
+          <div className="text-center">
+            <div className="text-lg">Loading...</div>
+          </div>
+        </div>
+      </main>
+    )
+  }
+  
+  if (!isCustomer) {
+    return (
+      <main className="container mx-auto py-8">
+        <Card className="max-w-2xl mx-auto">
+          <CardHeader>
+            <CardTitle>Access Denied</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="p-4 bg-red-50 text-red-700 rounded mb-4">
+              {error}
+            </div>
+            <Button onClick={() => router.push("/dashboard")} className="w-full">
+              Go to Dashboard
+            </Button>
+          </CardContent>
+        </Card>
+      </main>
+    )
   }
 
   return (
@@ -71,6 +172,12 @@ export default function CreateAd() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
+            {error && (
+              <div className="p-4 bg-red-50 text-red-700 rounded text-sm">
+                {error}
+              </div>
+            )}
+            
             <div>
               <Label htmlFor="title">Title</Label>
               <Input
