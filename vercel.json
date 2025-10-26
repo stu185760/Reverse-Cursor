@@ -1,5 +1,6 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": ".next",
-  "installCommand": "npm install --legacy-peer-deps"
+  "installCommand": "npm install --legacy-peer-deps && npm rebuild lightningcss",
+  "framework": null
 }
