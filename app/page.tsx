@@ -4,10 +4,13 @@ export default function Home() {
   return (
     <main className="min-h-screen">
       {/* Hero Section */}
-      <section className="bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-950 py-20 px-4">
-        <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-5xl font-bold mb-6">EasyCustomized</h1>
-          <p className="text-xl text-muted-foreground mb-4">
+      <section className="relative py-20 px-4 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-background"></div>
+        <div className="relative max-w-6xl mx-auto text-center">
+          <h1 className="text-6xl font-bold mb-6 bg-gradient-to-r from-primary via-cyan-400 to-primary bg-clip-text text-transparent">
+            EasyCustomized
+          </h1>
+          <p className="text-2xl text-primary font-semibold mb-4">
             India's Reverse Marketplace
           </p>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-10">
@@ -17,19 +20,19 @@ export default function Home() {
           <div className="flex gap-4 justify-center flex-wrap">
             <Link 
               href="/dashboard/create-ad"
-              className="px-8 py-4 bg-primary text-primary-foreground rounded-lg font-semibold hover:opacity-90 transition-opacity"
+              className="px-8 py-4 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/80 transition-all shadow-lg shadow-primary/50"
             >
               Post a Requirement
             </Link>
             <Link
               href="/dashboard/browse"
-              className="px-8 py-4 border-2 border-primary rounded-lg font-semibold hover:bg-primary/10 transition-colors"
+              className="px-8 py-4 border-2 border-primary text-primary rounded-lg font-semibold hover:bg-primary hover:text-primary-foreground transition-all"
             >
               Browse Opportunities
             </Link>
             <Link
               href="/auth/sign-up"
-              className="px-8 py-4 border-2 border-border rounded-lg font-semibold hover:bg-accent transition-colors"
+              className="px-8 py-4 bg-card border border-border rounded-lg font-semibold hover:border-primary transition-all"
             >
               Sign Up
             </Link>
@@ -68,9 +71,9 @@ export default function Home() {
       </section>
 
       {/* Categories Section */}
-      <section className="py-16 px-4 bg-gray-50 dark:bg-gray-900">
+      <section className="py-16 px-4 bg-card/50">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">Popular Categories</h2>
+          <h2 className="text-3xl font-bold text-center mb-12 text-primary">Popular Categories</h2>
           <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {[
               { name: "Jewelry", icon: "💍" },
@@ -85,10 +88,10 @@ export default function Home() {
               <Link
                 key={category.name}
                 href={`/categories/${category.name.toLowerCase()}`}
-                className="p-6 bg-white dark:bg-gray-800 rounded-lg hover:shadow-lg transition-shadow text-center"
+                className="p-6 bg-card border border-border rounded-lg hover:border-primary hover:shadow-lg hover:shadow-primary/20 transition-all text-center group"
               >
-                <div className="text-3xl mb-2">{category.icon}</div>
-                <div className="font-semibold">{category.name}</div>
+                <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">{category.icon}</div>
+                <div className="font-semibold group-hover:text-primary transition-colors">{category.name}</div>
               </Link>
             ))}
           </div>
@@ -96,22 +99,23 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl font-bold mb-6">Ready to Get Started?</h2>
+      <section className="py-20 px-4 relative">
+        <div className="absolute inset-0 bg-gradient-to-t from-primary/5 to-transparent"></div>
+        <div className="relative max-w-4xl mx-auto text-center">
+          <h2 className="text-4xl font-bold mb-6 text-primary">Ready to Get Started?</h2>
           <p className="text-xl text-muted-foreground mb-8">
             Join thousands of customers and vendors on India's premier reverse marketplace
           </p>
           <div className="flex gap-4 justify-center flex-wrap">
             <Link
               href="/auth/sign-up"
-              className="px-8 py-4 bg-primary text-primary-foreground rounded-lg font-semibold hover:opacity-90 transition-opacity"
+              className="px-8 py-4 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/80 transition-all shadow-lg shadow-primary/50"
             >
               Create Free Account
             </Link>
             <Link
               href="/auth/login"
-              className="px-8 py-4 border-2 border-border rounded-lg font-semibold hover:bg-accent transition-colors"
+              className="px-8 py-4 border-2 border-primary text-primary rounded-lg font-semibold hover:bg-primary hover:text-primary-foreground transition-all"
             >
               Login
             </Link>
