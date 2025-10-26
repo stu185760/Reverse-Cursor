@@ -23,6 +23,7 @@ export default function SignupPage() {
     setLoading(true)
 
     try {
+      // Sign up the user
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -31,21 +32,30 @@ export default function SignupPage() {
             full_name: fullName,
             role: role,
           },
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
         },
       })
 
       if (error) throw error
 
-      if (data.user) {
+      // Check if email confirmation is required
+      if (data.user && !data.session) {
+        // Email confirmation required
+        setError("Please check your email to confirm your account before logging in.")
+        setLoading(false)
+        return
+      }
+
+      // If we have a session, user is logged in immediately
+      if (data.session) {
         setSuccess(true)
         setTimeout(() => {
           router.push("/")
           router.refresh()
-        }, 2000)
+        }, 1500)
       }
     } catch (err: any) {
       setError(err.message || "Failed to sign up")
-    } finally {
       setLoading(false)
     }
   }

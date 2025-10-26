@@ -51,15 +51,11 @@ export default function PostAdPage() {
   useEffect(() => {
     async function checkAuth() {
       const currentUser = await getCurrentUser()
-      if (!currentUser) {
-        router.push("/auth/login?redirect=/post-ad")
-      } else {
-        setUser(currentUser)
-      }
+      setUser(currentUser)
       setLoading(false)
     }
     checkAuth()
-  }, [router])
+  }, [])
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -104,6 +100,31 @@ export default function PostAdPage() {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <p>Loading...</p>
+      </div>
+    )
+  }
+
+  if (!user) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-center max-w-md">
+          <h2 className="text-2xl font-bold mb-4">Login Required</h2>
+          <p className="text-gray-600 mb-6">
+            You need to be logged in to post an ad.
+          </p>
+          <Link
+            href="/auth/login"
+            className="inline-block px-6 py-3 bg-black text-white rounded-lg font-medium hover:bg-gray-800"
+          >
+            Login
+          </Link>
+          <p className="mt-4 text-sm text-gray-600">
+            Don't have an account?{" "}
+            <Link href="/auth/signup" className="text-blue-600 hover:underline">
+              Sign up
+            </Link>
+          </p>
+        </div>
       </div>
     )
   }
