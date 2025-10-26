@@ -4,19 +4,40 @@ import type { Ad } from "./types"
 export async function createAd(ad: Omit<Ad, "id" | "created_at" | "updated_at">) {
   const supabase = getSupabaseClient()
   
-  // Ensure status is valid
+  // Ensure status is valid - force to lowercase and validate
   const validStatuses = ["open", "closed", "in_progress"] as const
+  const statusValue = (ad.status || "open").toLowerCase()
+  const finalStatus = validStatuses.includes(statusValue as any) ? statusValue : "open"
+  
   const adData = {
-    ...ad,
-    status: validStatuses.includes(ad.status as any) ? ad.status : "open"
+    user_id: ad.user_id,
+    title: ad.title,
+    description: ad.description,
+    category: ad.category,
+    location: ad.location,
+    budget_min: Number(ad.budget_min),
+    budget_max: Number(ad.budget_max),
+    status: finalStatus
   }
   
-  console.log("[createAd] Inserting ad with data:", JSON.stringify(adData, null, 2))
+  console.log("[createAd] Original ad data:", JSON.stringify(ad, null, 2))
+  console.log("[createAd] Status validation:", {
+    original: ad.status,
+    normalized: statusValue,
+    final: finalStatus,
+    validStatuses
+  })
+  console.log("[createAd] Final ad data being inserted:", JSON.stringify(adData, null, 2))
   
   const { data, error } = await supabase.from("ads").insert([adData]).select().single()
 
   if (error) {
-    console.error("[createAd] Database error:", error)
+    console.error("[createAd] Database error details:", {
+      message: error.message,
+      details: error.details,
+      hint: error.hint,
+      code: error.code
+    })
     throw error
   }
   
