@@ -36,12 +36,12 @@ export function Hero() {
             </div>
 
             <div className="flex flex-wrap gap-4">
-              <Link href="/post-ad">
+              <Link href="/dashboard/create-ad">
                 <Button size="lg" className="text-lg px-8">
                   Post Your Request
                 </Button>
               </Link>
-              <Link href="/ads">
+              <Link href="/dashboard/browse">
                 <Button size="lg" variant="outline" className="text-lg px-8">
                   Browse Requests
                 </Button>

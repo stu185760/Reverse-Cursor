@@ -53,7 +53,7 @@ export function RecentAds() {
                     <span className="text-sm text-muted-foreground">
                       {ad.author} • {ad.date}
                     </span>
-                    <Link href={`/ads/${ad.id}`}>
+                    <Link href={`/dashboard/browse`}>
                       <Button variant="link">View details →</Button>
                     </Link>
                   </div>
