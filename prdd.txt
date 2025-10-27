@@ -1,0 +1,284 @@
+Perfect ✅ — based on everything you’ve shared (your **Cursor dev logs**, **mobile PRD**, and the original **EasyCustomized PRD**), here’s a **comprehensive, professional-grade Product Requirements Document (PRD)** specifically tailored for the **EasyCustomized Web Platform (Website)**.
+
+This is written at a **production-level standard**, ready for engineering, design, and stakeholder alignment — optimized for your **Next.js 15 + TypeScript + Tailwind CSS 4 + Supabase/Mongo backend** tech stack.
+
+---
+
+# 🌐 **Product Requirements Document (PRD)**
+
+## Project: EasyCustomized – AI-Powered Reverse Marketplace (Web Platform)
+
+**Version:** 2.0
+**Date:** October 2025
+**Owner:** Product Team, EasyCustomized
+**Document Status:** Approved
+**Prepared For:** Web Development, Product, and AI Teams
+
+---
+
+## 1️⃣ Executive Summary
+
+**EasyCustomized** is India’s first **AI-enabled reverse marketplace** for customized goods and services.
+Unlike traditional e-commerce, where vendors list items, **EasyCustomized flips the model** — customers post **requirements**, and **vendors compete** by submitting quotes.
+
+The web platform is the **core product layer** powering both the **PWA** and **mobile app**, designed for speed, scalability, and SEO optimization using **Next.js 15**.
+
+---
+
+## 2️⃣ Product Vision
+
+> **To be India’s most trusted digital platform connecting customers and artisans through personalized, transparent, and AI-powered craftsmanship.**
+
+**Mission:**
+Empower both customers and small businesses by providing a safe, transparent space for custom product creation and collaboration.
+
+---
+
+## 3️⃣ Goals & Objectives
+
+| Objective          | Description                                                                             |
+| ------------------ | --------------------------------------------------------------------------------------- |
+| 🎯 Core Platform   | Build a responsive, SEO-optimized web platform supporting reverse marketplace workflows |
+| 🤝 User Connection | Enable structured customer–vendor interactions (ads, quotes, messaging)                 |
+| 🧠 AI Layer        | Use machine learning to recommend vendors, detect spam, and optimize quoting            |
+| 💰 Monetization    | Implement 10% commission per successful transaction                                     |
+| 📲 Accessibility   | 100% responsive and installable as a PWA on mobile                                      |
+| 🛡️ Trust          | Ratings, verified vendors, and secure payments (INR)                                    |
+
+---
+
+## 4️⃣ Target Users
+
+### 👩 **Customers**
+
+* Urban professionals seeking customized gifts, jewelry, home décor, etc.
+* Desire transparency, reliable communication, and verified vendors.
+
+### 🧑‍🔧 **Vendors**
+
+* Artisans, small manufacturers, designers, freelancers.
+* Need qualified leads and national visibility.
+
+### 👩‍💼 **Admins**
+
+* Oversee content, verify vendors, manage disputes, ensure compliance.
+
+---
+
+## 5️⃣ Functional Requirements (Web Platform)
+
+### 🧩 Core Modules
+
+| Module                   | Description                                                                    |
+| ------------------------ | ------------------------------------------------------------------------------ |
+| **User Management**      | Role-based authentication, profile creation, verification                      |
+| **Ad Posting**           | Customers create detailed posts with description, category, budget, and photos |
+| **Quote System**         | Vendors respond to ads with price quotes and delivery time                     |
+| **Chat Messaging**       | Real-time conversation between vendor and customer                             |
+| **Vendor Matching (AI)** | Recommends vendors based on ad content, location, and ratings                  |
+| **Reviews & Ratings**    | Customers review vendors post-transaction                                      |
+| **Admin Dashboard**      | For moderation, reports, and analytics                                         |
+| **Search & Discovery**   | Browse/filter ads, vendors, and categories                                     |
+| **PWA Installation**     | Full offline capability, “Add to Home Screen” prompt                           |
+
+---
+
+## 6️⃣ Detailed Feature Breakdown
+
+### 👩 Customer Features
+
+| Feature               | Description                                                | Priority |
+| --------------------- | ---------------------------------------------------------- | -------- |
+| **Sign Up/Login**     | Google, Email, or OTP-based login                          | P0       |
+| **Post Requirement**  | Step-by-step form: category, description, budget, images   | P0       |
+| **Quote Comparison**  | Table view of vendor quotes (price, rating, delivery days) | P0       |
+| **Chat System**       | Real-time text chat per ad thread                          | P1       |
+| **Profile Dashboard** | Manage ads, accepted quotes, and messages                  | P0       |
+| **Ratings & Reviews** | Rate vendors after order completion                        | P1       |
+
+---
+
+### 🧑 Vendor Features
+
+| Feature                 | Description                                              | Priority |
+| ----------------------- | -------------------------------------------------------- | -------- |
+| **Profile Setup**       | Add bio, portfolio, years of experience                  | P0       |
+| **Browse Ads**          | Filter by category, budget, location                     | P0       |
+| **Submit Quote**        | Offer price, delivery timeline, proposal note            | P0       |
+| **Vendor Dashboard**    | View submitted quotes, chat threads, and accepted orders | P0       |
+| **Earnings Overview**   | See earnings from confirmed deals                        | P2       |
+| **Vendor Verification** | Upload KYC, get verified badge                           | P1       |
+
+---
+
+### 👩‍💼 Admin Features
+
+| Feature                 | Description                                  | Priority |
+| ----------------------- | -------------------------------------------- | -------- |
+| **User Management**     | Approve, suspend, or verify users            | P0       |
+| **Ad Moderation**       | Approve/reject customer ads                  | P0       |
+| **Quote Oversight**     | Detect spam or fraudulent quotes             | P1       |
+| **Reports & Analytics** | Generate insights (GMV, conversion, traffic) | P1       |
+| **Data Export/Import**  | Backup or restore platform data              | P2       |
+
+---
+
+## 7️⃣ AI-Powered Features (Web)
+
+| Feature                         | Description                                              | AI Model                   |
+| ------------------------------- | -------------------------------------------------------- | -------------------------- |
+| **Vendor Auto-Match**           | Suggest vendors based on ad title, description, and tags | Embedding similarity model |
+| **Quote Insights**              | Suggest optimal quote ranges based on category & history | Regression model           |
+| **Ad Moderation**               | Flag spam or duplicate content                           | NLP classifier             |
+| **Smart Chat Replies (Future)** | Suggest responses to users in chat                       | GPT-based assistant        |
+
+---
+
+## 8️⃣ User Flows (Web)
+
+### 🧭 Customer Journey
+
+```
+Landing → Sign In → Post Ad → Vendors Quote → Compare Quotes 
+→ Chat Vendor → Accept Quote → Make Payment → Review Vendor
+```
+
+### 🧭 Vendor Journey
+
+```
+Login → View Relevant Ads → Submit Quote → Chat Customer 
+→ Order Accepted → Deliver → Receive Payment
+```
+
+### 🧭 Admin Journey
+
+```
+Login → Dashboard → Review Flags → Approve/Reject Ads 
+→ Generate Reports → Moderate Users → Analyze Growth
+```
+
+---
+
+## 9️⃣ Design System (Web)
+
+### 🎨 Visual Identity
+
+| Element        | Style                                                               |
+| -------------- | ------------------------------------------------------------------- |
+| **Theme**      | Jet Black `#0D0D0D`, Neon Cyan `#00FFFF`, Electric Purple `#7A00FF` |
+| **Typography** | Geist Sans / Inter                                                  |
+| **Buttons**    | Rounded-lg, glowing hover, gradient border                          |
+| **Cards**      | Glassmorphism with blur and shadow                                  |
+| **Layout**     | Grid-based, PWA responsive, dark-first design                       |
+
+### 🧱 Layout Components
+
+* Header + Search Bar + Profile Menu
+* Ad Cards (Category, Title, Budget, Location)
+* Quote Cards (Vendor details + Proposal)
+* Chat Panel (Sticky input + scrollable messages)
+* Admin Dashboard (Stats, Table View, Reports)
+
+---
+
+## 🔌 Technical Specifications
+
+| Component            | Stack                                            |
+| -------------------- | ------------------------------------------------ |
+| **Framework**        | Next.js 15 (App Router)                          |
+| **Language**         | TypeScript                                       |
+| **Styling**          | Tailwind CSS 4.1 + shadcn/ui                     |
+| **State Management** | SWR (server state) + React Context               |
+| **Forms**            | React Hook Form + Zod Validation                 |
+| **Auth**             | Supabase Auth or JWT                             |
+| **Database**         | Supabase PostgreSQL / MongoDB                    |
+| **Storage**          | Cloudinary (images), Supabase Storage (optional) |
+| **Payments**         | Razorpay (INR, escrow-based)                     |
+| **Hosting**          | Vercel (CDN + Edge Network)                      |
+| **Realtime**         | Supabase Realtime / Socket.io                    |
+| **Monitoring**       | Sentry + Vercel Logs                             |
+| **Analytics**        | Google Analytics + Mixpanel                      |
+
+---
+
+## ⚙️ Non-Functional Requirements
+
+| Category          | Requirement                                                |
+| ----------------- | ---------------------------------------------------------- |
+| **Performance**   | Page load < 2s (95th percentile), TTI < 3s                 |
+| **Security**      | HTTPS enforced, encrypted tokens, SQL injection prevention |
+| **Scalability**   | 10K concurrent users, 1M+ ads                              |
+| **Reliability**   | 99.9% uptime, automated DB backups                         |
+| **Accessibility** | WCAG 2.1 AA compliant                                      |
+| **SEO**           | SSR rendering, meta tags, sitemap.xml                      |
+| **Compliance**    | DPDPA (India) + GDPR readiness                             |
+
+---
+
+## 🧾 Success Metrics
+
+| Metric                      | Target                |
+| --------------------------- | --------------------- |
+| Vendors onboarded           | 100 in first 3 months |
+| Ads posted                  | 1,000+ in 6 months    |
+| Conversion rate             | 25–30%                |
+| Quote response time         | < 1 hour              |
+| Average vendor rating       | > 4.2 stars           |
+| Customer satisfaction (NPS) | 50+                   |
+| Uptime                      | 99.9%                 |
+
+---
+
+## 🧱 Implementation Roadmap (Website)
+
+| Phase                           | Sprint | Deliverables                                     |
+| ------------------------------- | ------ | ------------------------------------------------ |
+| **Phase 1: Core Web MVP**       | 1–4    | Auth, Ad Posting, Quote System, Vendor Dashboard |
+| **Phase 2: Chat & AI Matching** | 5–7    | Chat System, Vendor AI Recommendations           |
+| **Phase 3: Admin Tools**        | 8–9    | Admin Dashboard, Moderation                      |
+| **Phase 4: Payments & PWA**     | 10–12  | Razorpay Escrow, Offline Mode, Installable PWA   |
+| **Phase 5: Optimization & SEO** | 13–14  | Lighthouse Audit >90, schema markup              |
+
+---
+
+## ⚠️ Risks & Mitigation
+
+| Risk                     | Impact | Mitigation                                |
+| ------------------------ | ------ | ----------------------------------------- |
+| Low vendor participation | High   | Early partnerships, onboarding incentives |
+| Spam or fake ads         | Medium | AI moderation + user verification         |
+| Payment disputes         | High   | Escrow + admin dispute resolution         |
+| Scalability issues       | Medium | Cloud-native design, DB sharding          |
+| SEO visibility           | Medium | Pre-rendered content + structured data    |
+
+---
+
+## 📊 Appendices
+
+**Glossary**
+
+* *Ad:* A customer’s posted request
+* *Quote:* Vendor’s proposal in response
+* *GMV:* Gross Merchandise Value
+* *PWA:* Progressive Web App
+
+**References**
+
+* Next.js 15 Docs
+* Tailwind CSS 4 Docs
+* Supabase Documentation
+* Razorpay Developer API
+
+---
+
+✅ **Summary:**
+
+* Core product will be **web-first, PWA-ready**.
+* Central marketplace logic runs on **Next.js 15 + Supabase/Mongo**.
+* Enables **real-time chat, AI vendor matching, INR transactions**, and **moderation tools**.
+* Serves as the **foundation for mobile app (Capacitor) builds**.
+
+---
+
+Would you like me to create **a visual Web Architecture & User Journey diagram (Mermaid/Figma-ready)** next — showing how all roles and modules interact?
+It can include **frontend routes, backend APIs, and AI matching logic** for the engineering team.
