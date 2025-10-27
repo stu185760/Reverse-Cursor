@@ -78,7 +78,6 @@ export default function CreateAd() {
         location: data.location,
         budget_min: data.budget_min,
         budget_max: data.budget_max,
-        status: "open",
       })
 
       console.log("Ad created successfully:", ad.id)

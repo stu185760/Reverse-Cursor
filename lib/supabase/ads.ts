@@ -1,13 +1,11 @@
 import { getSupabaseClient } from "./client"
 import type { Ad } from "./types"
 
-export async function createAd(ad: Omit<Ad, "id" | "created_at" | "updated_at">) {
+export async function createAd(ad: Omit<Ad, "id" | "created_at" | "updated_at" | "status">) {
   const supabase = getSupabaseClient()
   
-  // Ensure status is valid - force to lowercase and validate
-  const validStatuses = ["open", "closed", "in_progress"] as const
-  const statusValue = (ad.status || "open").toLowerCase()
-  const finalStatus = validStatuses.includes(statusValue as any) ? statusValue : "open"
+  // Simple, bulletproof status validation
+  const status = "open" // Always use "open" for new ads
   
   const adData = {
     user_id: ad.user_id,
@@ -17,37 +15,15 @@ export async function createAd(ad: Omit<Ad, "id" | "created_at" | "updated_at">)
     location: ad.location,
     budget_min: Number(ad.budget_min),
     budget_max: Number(ad.budget_max),
-    status: finalStatus
+    status: status
   }
   
-  console.log("[createAd] Original ad data:", JSON.stringify(ad, null, 2))
-  console.log("[createAd] Status validation:", {
-    original: ad.status,
-    originalType: typeof ad.status,
-    normalized: statusValue,
-    normalizedType: typeof statusValue,
-    final: finalStatus,
-    finalType: typeof finalStatus,
-    validStatuses,
-    isValid: validStatuses.includes(finalStatus as any)
-  })
-  console.log("[createAd] Final ad data being inserted:", JSON.stringify(adData, null, 2))
-  console.log("[createAd] Status field specifically:", {
-    value: adData.status,
-    type: typeof adData.status,
-    length: adData.status?.length,
-    charCodes: adData.status?.split('').map(c => c.charCodeAt(0))
-  })
+  console.log("[createAd] Creating ad with data:", JSON.stringify(adData, null, 2))
   
   const { data, error } = await supabase.from("ads").insert([adData]).select().single()
 
   if (error) {
-    console.error("[createAd] Database error details:", {
-      message: error.message,
-      details: error.details,
-      hint: error.hint,
-      code: error.code
-    })
+    console.error("[createAd] Database error:", error)
     throw error
   }
   
